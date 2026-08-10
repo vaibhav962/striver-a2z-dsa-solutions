@@ -1,5 +1,7 @@
 package binarySearch;
 
+import java.util.Arrays;
+
 public class BinarySearchOnAnswers {
     // Find square root of a number
     // 69. Sqrt(x)
@@ -145,6 +147,200 @@ public class BinarySearchOnAnswers {
                 return totalSum;
         }
         return totalSum;
+    }
+
+    // 1011. Capacity To Ship Packages Within D Days - TC: O(N log (sum - max + 1))
+    public int shipWithinDays(int[] weights, int days) {
+        int low = 0;
+        int high = 0;
+        for (int weight : weights) {
+            low = Math.max(low, weight);
+            high += weight;
+        }
+
+        while(low <= high){
+            int mid = (low + high) / 2;
+            int numOfDays = requiredDays(weights, mid);
+            if(numOfDays <= days){
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+
+        return low;
+    }
+
+    private int requiredDays(int[] weights, int capacity){
+        int load = 0;
+        int days = 0;
+        for(int weight : weights){
+            if(load + weight <= capacity){
+                load += weight;
+            }
+            else{
+                days++;
+                load = weight;
+            }
+        }
+        return days;
+    }
+
+    // 1539. Kth Missing Positive Number - TC: O(N)
+    public int findKthPositiveBrute(int[] arr, int k) {
+        int n = arr.length;
+        for(int i = 0; i < n; i++){
+            if(arr[i] <= k) k++;
+            else break;
+        }
+        return k;
+    }
+
+    public int findKthPositive(int[] arr, int k) {
+        int low = 0;
+        int high = arr.length - 1;
+        while(low <= high){
+            int mid = (low + high) / 2;
+            int missing = arr[mid] - (mid + 1);
+            if(missing <= k) low = mid + 1;
+            else high = mid - 1;
+        }
+//        (1) currentMissingNumber = arr[high] - (high + 1)
+//        (2) answer = arr[high] + k - currentMissingNumber
+//            answer = arr[high] + k - (arr[high] - high - 1))
+//                   = arr[high] + k - arr[high] + high + 1))
+//                   = k + high + 1
+//                   = k + low
+        return k + low;
+    }
+
+    // Aggressive Cows
+    public int aggressiveCows(int[] nums, int k) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        int low = 1;
+        int high = nums[n-1] - nums[0];
+
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            if(isPossibleToPlace(nums, mid, k))
+                low = mid + 1;
+            else high = mid - 1;
+        }
+
+        return high;
+    }
+
+    private boolean isPossibleToPlace(int[] arr, int dist, int cows){
+        int cowsPlaced = 1;
+        int lastCow = arr[0];
+        int n = arr.length;
+        for (int i = 1; i < n; i++) {
+            if(arr[i] - lastCow >= dist){
+                cowsPlaced++;
+                lastCow = arr[i];
+            }
+        }
+        return cowsPlaced >= cows;
+    }
+
+    // 1552. Magnetic Force Between Two Balls
+    public int maxDistance(int[] position, int m) {
+        int n = position.length;
+        Arrays.sort(position);
+        int low = 1;
+        int high = position[n-1] - position[0];
+
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            if(isPossibleToPlace(position, mid, m))
+                low = mid + 1;
+            else high = mid - 1;
+        }
+
+        return high;
+    }
+
+    private boolean isPossibleToPlaceBalls(int[] arr, int dist, int balls){
+        int ballsPlaced = 1;
+        int lastBall = arr[0];
+        int n = arr.length;
+        for (int i = 1; i < n; i++) {
+            if(arr[i] - lastBall >= dist){
+                ballsPlaced++;
+                if (ballsPlaced == balls) {
+                    return true;
+                }
+                lastBall = arr[i];
+            }
+        }
+        return ballsPlaced >= balls;
+    }
+
+    // Book Allocation Problem
+    public int findPages(int[] nums, int m) {
+        int low = 0, high = 0;
+
+        for(int i : nums){
+            low = Math.max(low, i);
+            high += i;
+        }
+
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            if(possibleStudents(nums, mid) <= m)
+                high = mid - 1;
+            else low = mid + 1;
+        }
+        return low;
+    }
+
+    private int possibleStudents(int[] arr, int maxPages){
+        int page = 0;
+        int students = 1;
+        for(int i = 0; i < arr.length; i++){
+            if(page + arr[i] <= maxPages){
+                page += arr[i];
+            }
+            else{
+                students++;
+                page = arr[i];
+            }
+        }
+        return students;
+    }
+
+    // 410. Split Array Largest Sum - TC: O(N log (sum - max + 1))
+    public int splitArray(int[] nums, int k) {
+        int low = 0, high = 0;
+        for(int i : nums){
+            high += i;
+            low = Math.max(low, i);
+        }
+
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            if(possibleSplit(nums, mid) <= k){
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return low;
+    }
+
+    private int possibleSplit(int[] arr, int maxSum){
+        int split = 1;
+        int sum = 0;
+        int n = arr.length;
+        for(int i = 0; i < n; i++){
+            if(sum + arr[i] <= maxSum){
+                sum += arr[i];
+            }
+            else{
+                split++;
+                sum = arr[i];
+            }
+        }
+        return split;
     }
 
     public static void main(String[] args) {
