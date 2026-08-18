@@ -343,6 +343,100 @@ public class BinarySearchOnAnswers {
         return split;
     }
 
+    // Minimize Max Distance to Gas Station
+    public double minimiseMaxDistance(int[] arr, int k) {
+        int n = arr.length;
+        double low = 0;
+        double high = 0;
+
+        for(int i = 0; i < n - 1; i++){
+            high = Math.max(high,(double)arr[i+1] - arr[i]);
+        }
+        double diff = 1e-6;
+        while(high - low > diff){
+            double mid = (low + high) / (2.0);
+            int counter = numberOfGasStationsRequired(mid, arr);
+            if(counter > k) low = mid;
+            else high = mid;
+        }
+        return high;
+    }
+
+    private int numberOfGasStationsRequired(double dist, int[] arr){
+        int cnt = 0;
+        for(int i = 1; i < arr.length; i++){
+            double numberInBetween = (arr[i] - arr[i-1]) / dist;
+            if((arr[i] - arr[i-1]) / dist == numberInBetween * dist){
+                numberInBetween--;
+            }
+            cnt += (int) numberInBetween;
+        }
+        return cnt;
+    }
+
+    // 4. Median of Two Sorted Arrays - TC: O(log (min(n1, n2)))
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+
+        if(n1>n2) return findMedianSortedArrays(nums2, nums1);
+        int low = 0, high = n1;
+
+        int n = n1 + n2;
+        int left = (n + 1) / 2;
+
+        while(low <= high){
+            int mid1 = (low + high) >> 1;
+            int mid2 = left - mid1;
+            int l1 = Integer.MIN_VALUE, l2 = Integer.MIN_VALUE;
+            int r1 = Integer.MAX_VALUE, r2 = Integer.MAX_VALUE;
+
+            if(mid1 < n1) r1 = nums1[mid1];
+            if(mid2 < n2) r2 = nums2[mid2];
+            if(mid1 - 1 >= 0) l1 = nums1[mid1-1];
+            if(mid2 - 1 >= 0) l2 = nums2[mid2-1];
+
+            if(l1 <= r2 && l2 <= r1){
+                if(n % 2 == 1) return Math.max(l1, l2);
+                return (double) (Math.max(l1, l2) + Math.min(r1, r2)) / (2.0);
+            }
+            else if(l1 > r2) high = mid1 - 1;
+            else low = mid1 + 1;
+        }
+        return 0;
+    }
+
+    // Kth element of 2 sorted arrays - TC: O(log (min(n1, n2)))
+    public int kthElement(int[] nums1, int[] nums2, int k) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+
+        if(n1>n2) return kthElement(nums2, nums1, k);
+        int low = Math.max(0, k-n2), high = Math.min(k, n1);
+
+        int n = n1 + n2;
+        int left = k;
+
+        while(low <= high){
+            int mid1 = (low + high) >> 1;
+            int mid2 = left - mid1;
+            int l1 = Integer.MIN_VALUE, l2 = Integer.MIN_VALUE;
+            int r1 = Integer.MAX_VALUE, r2 = Integer.MAX_VALUE;
+
+            if(mid1 < n1) r1 = nums1[mid1];
+            if(mid2 < n2) r2 = nums2[mid2];
+            if(mid1 - 1 >= 0) l1 = nums1[mid1-1];
+            if(mid2 - 1 >= 0) l2 = nums2[mid2-1];
+
+            if(l1 <= r2 && l2 <= r1){
+                return Math.max(l1, l2);
+            }
+            else if(l1 > r2) high = mid1 - 1;
+            else low = mid1 + 1;
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
 //        int x = 24;
 //        System.out.println(floorSqrt(x));
