@@ -7,6 +7,7 @@ public class LL {
         ListNode() {}
         ListNode(int val){
             this.val = val;
+            next = null;
         }
         ListNode(int val, ListNode next){
             this.val = val;
@@ -14,7 +15,7 @@ public class LL {
         }
     }
 
-    public ListNode makeLL(int[] arr){
+    public static ListNode makeLL(int[] arr){
         if(arr == null || arr.length == 0) return null;
         ListNode head = new ListNode(arr[0]);
         ListNode temp = head;
@@ -26,7 +27,7 @@ public class LL {
         return head;
     }
 
-    public int lengthOfLL(ListNode head){
+    public static int lengthOfLL(ListNode head){
         int ctr = 0;
         ListNode temp = head;
         while(temp != null){
