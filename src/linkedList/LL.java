@@ -148,4 +148,13 @@ public class LL {
         return head;
     }
 
+    public static void printLL(ListNode head) {
+        StringBuilder sb = new StringBuilder();
+        for (ListNode node = head; node != null; node = node.next) {
+            sb.append(node.val).append(" -> ");
+        }
+        sb.append("X");
+        System.out.println(sb);
+    }
+
 }

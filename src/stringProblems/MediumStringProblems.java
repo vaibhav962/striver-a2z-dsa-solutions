@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class MidStringProblems {
+public class MediumStringProblems {
     // 451. Sort Characters By Frequency
     public String frequencySort(String s) {
         Map<Character, Integer> count = new HashMap<>();

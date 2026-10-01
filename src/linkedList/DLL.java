@@ -1,5 +1,7 @@
 package linkedList;
 
+import java.sql.SQLOutput;
+
 public class DLL {
     public static class ListNode {
         int val;
@@ -84,8 +86,6 @@ public class DLL {
         return head;
     }
 
-
-
     public static ListNode removeHead(ListNode head){
         if(head == null) return head;
         ListNode temp = head;
@@ -157,4 +157,28 @@ public class DLL {
         temp.prev = temp.next = null;
     }
 
+    // TC: O(N) | SC: O(1)
+    public static ListNode reverseDLL(ListNode head){
+        if(head == null || head.next == null) return head;
+        ListNode current = head;
+        ListNode prevNode = null;
+
+        while(current != null){
+            prevNode = current.prev;
+            current.prev = current.next;
+            current.next = prevNode;
+            current = current.prev;
+        }
+        head = prevNode.prev;
+        return head;
+    }
+
+    public static void printDLL(ListNode head) {
+        StringBuilder sb = new StringBuilder("X <--> ");
+        for (ListNode node = head; node != null; node = node.next) {
+            sb.append(node.val).append(" <--> ");
+        }
+        sb.append("X");
+        System.out.println(sb);
+    }
 }
