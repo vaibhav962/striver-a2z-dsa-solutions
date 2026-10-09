@@ -12,7 +12,6 @@ public class EasyArrayProblems {
         return max;
     }
 
-
     // Better than Bruteforce..
     static int secondLargest(int[] nums){
         int largest = Integer.MIN_VALUE;

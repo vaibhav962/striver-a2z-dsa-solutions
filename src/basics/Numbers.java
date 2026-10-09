@@ -109,7 +109,6 @@ public class Numbers {
         }
         return gcd;
     }
-
     // O(log(min(a, b)))
     static int betterGCD(int a, int b){
         while(a > 0 && b > 0){
