@@ -44,6 +44,29 @@ public class EasyGreedy {
         return true;
     }
 
+    // Fractional Knapsack
+    // TC: O(N + N log N) | SC: O(1)
+    public double fractionalKnapsack(int[] val, int[] wt, int capacity) {
+        int n = val.length;
+        Integer[] idx = new Integer[n];
+        for (int i = 0; i < n; i++) idx[i] = i;
+        Arrays.sort(idx, (a, b) -> Double.compare((double) val[b] / wt[b], (double) val[a] / wt[a]));
+
+        double total = 0.0;
+        int remaining = capacity;
+        for (int i : idx) {
+            if (remaining == 0) break;
+            if (wt[i] <= remaining) {
+                total += val[i];
+                remaining -= wt[i];
+            } else {
+                total += (double) val[i] * remaining / wt[i];
+                remaining = 0;
+            }
+        }
+        return total;
+    }
+
     // 55. Jump Game
     // TC: O(N) | SC: O(1)
     public static boolean canJump(int[] nums) {
